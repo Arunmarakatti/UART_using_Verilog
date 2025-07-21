@@ -36,13 +36,9 @@ This project implements a basic UART-style serial communication system in Verilo
 
 ## ▶️ How to Simulate
 
-Use any Verilog-compatible simulator such as ModelSim, Icarus Verilog, or VCS.
+Use any Verilog-compatible simulator such as Icarus Verilog.
 
-### ModelSim/Questa
-
-```bash
-vlib work
-vlog uart_top.v uart_tb.v
-vsim -c tb -do "run -all; quit"
+iverilog -o design.v tb.v
+vvp uart_sim
 
 
