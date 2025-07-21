@@ -1,19 +1,48 @@
-# UART Transmitter & Receiver in SystemVerilog
-Simulation of a UART protocol with integrated TX/RX logic, built in SystemVerilog and tested using Aldec Riviera Pro.
-Project Description: This repository contains a SystemVerilog implementation of a UART transmitter and receiver in a single top module, tested using a self-contained testbench. The testbench feeds random data to the UART transmitter and verifies reception via a loopback connection.
-Features: 
-  Configurable baud rate and clock
-  Full UART protocol (start bit, data bits, stop bit)
-  Loopback test with random stimulus
-  Start/stop/done signal handling
-  Self-checking testbench
-Simulation Setup:
-  1. Go to https://edaplayground.com/
-  2. Select:
-     - Language: SystemVerilog
-     - Simulator: Aldec Riviera Pro 2023.04
-  3. Paste your `top` module in the "Design" section.
-  4. Paste the testbench code in the "Testbench" section.
-  5. Enable waveform viewer (EPWave).
-  6. Click "Run".
-  7. Observe the TX/RX activity and signal transitions.
+# 🔌 Verilog UART Transmitter and Receiver Simulation
+
+This project implements a basic UART-style serial communication system in Verilog, featuring both transmit (TX) and receive (RX) logic with baud rate generation and loopback verification using a self-checking testbench.
+
+---
+
+## 📄 Project Description
+
+- A UART TX module sends an 8-bit data frame with start and stop bits.
+- A UART RX module receives serialized bits using mid-bit sampling logic.
+- A single wire (`txrx`) is used for loopback, simulating both transmit and receive paths.
+- A testbench stimulates the system by sending random data, waits for transmission and reception to complete, and dumps the waveform for verification.
+
+---
+
+## ⚙️ Configuration Parameters
+
+| Parameter      | Description                        | Default Value |
+|----------------|------------------------------------|---------------|
+| clk_value      | System clock frequency in Hz       | 100_000       |
+| baud           | UART baud rate                     | 9600          |
+| wait_count     | Number of clock cycles per bit     | Auto-calculated (clk_value / baud) |
+
+---
+
+## ✅ Features
+
+- UART bit framing (1 start bit, 8 data bits, 1 stop bit)
+- Bit-level transmit and receive logic
+- Parameterized baud rate generator
+- Mid-bit sampling on RX to improve noise immunity
+- Handshake output signals: `txdone` and `rxdone`
+- Self-checking loopback testbench using random data
+
+---
+
+## ▶️ How to Simulate
+
+Use any Verilog-compatible simulator such as ModelSim, Icarus Verilog, or VCS.
+
+### ModelSim/Questa
+
+```bash
+vlib work
+vlog uart_top.v uart_tb.v
+vsim -c tb -do "run -all; quit"
+
+
